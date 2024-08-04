@@ -6,6 +6,7 @@ import courses from "../api/courses";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Course } from "@/types";
 
 const schema = yup
   .object({
@@ -18,7 +19,7 @@ const Courses: React.FC = () => {
     queryFn: async () => await courses(),
   });
 
-  const [filteredCourses, setFilteredCourses] = useState<any[]>([]);
+  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
   const [searchCount, setSearchCount] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -33,7 +34,7 @@ const Courses: React.FC = () => {
 
   const onSubmit = (values: { search: string }) => {
     if (data?.products) {
-      const filtered = data.products.filter((course: any) =>
+      const filtered = data.products.filter((course: Course) =>
         course.title.toLowerCase().includes(values.search.toLowerCase())
       );
       setFilteredCourses(filtered);
@@ -78,20 +79,35 @@ const Courses: React.FC = () => {
     <div className="container m-auto p-4 sm:p-0">
       <div className="flex flex-col sm:flex-row gap-3 justify-between items-start p-0 sm:py-8 border-b border-gray-300">
         <p className=" text-2xl sm:text-4xl md:text-5xl font-bold">Courses</p>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="mb-4 w-full sm:w-auto"
-        >
-          <input
-            {...register("search")}
-            type="text"
-            placeholder="Search course by name"
-            className="p-2 border rounded w-full"
-          />
-          {errors.search && (
-            <p className="text-red-500">{errors.search.message}</p>
-          )}
-        </form>
+        <div className="flex items-center mb-4 w-full sm:w-auto p-2 border rounded">
+          <svg
+            className="w-4 h-4 text-gray-500 dark:text-gray-400 mr-2"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+            />
+          </svg>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+            <input
+              {...register("search")}
+              type="text"
+              placeholder="Search course by name"
+              className="focus:outline-none focus:border-none"
+            />
+            {errors.search && (
+              <p className="text-red-500">{errors.search.message}</p>
+            )}
+          </form>
+        </div>
       </div>
 
       {searchTerm &&
@@ -105,7 +121,7 @@ const Courses: React.FC = () => {
         ))}
 
       <div className="grid grid-cols-1 py-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {filteredCourses.map((course: any) => (
+        {filteredCourses.map((course: Course) => (
           <CourseCard
             key={course.sku}
             title={course.title}

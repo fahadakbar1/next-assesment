@@ -1,10 +1,4 @@
-interface CourseCardProps {
-  title: string;
-  author: string;
-  duration: string;
-  level: string;
-  image: string;
-}
+import { CourseCardProps } from "@/types";
 
 const CourseCard: React.FC<CourseCardProps> = ({
   title,
