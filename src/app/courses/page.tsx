@@ -125,7 +125,7 @@ const Courses: React.FC = () => {
           <CourseCard
             key={course.sku}
             title={course.title}
-            author={course.sku}
+            author={course.brand?course.brand:"Anchorage"}
             duration={course.price}
             level={course.category}
             image={course.images[0]}
